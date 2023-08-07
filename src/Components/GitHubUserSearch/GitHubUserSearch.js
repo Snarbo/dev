@@ -1,11 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useStateContext } from '../../store/ThemeContext';
 
 import ProfilePlaceholder from '../../assets/images/profile-placeholder.png';
-import SearchIcon from '../../assets/images/icon-search.svg';
-import LocationIcon from '../../assets/images/icon-location.svg';
-import TwitterIcon from '../../assets/images/icon-twitter.svg';
-import WebsiteIcon from '../../assets/images/icon-website.svg';
-import CompanyIcon from '../../assets/images/icon-company.svg';
+import SearchIcon from '../../assets/icons/icon-search.svg';
+import LocationIconDark from '../../assets/icons/icon-location-dark.svg';
+import TwitterIconDark from '../../assets/icons/icon-twitter-dark.svg';
+import WebsiteIconDark from '../../assets/icons/icon-website-dark.svg';
+import CompanyIconDark from '../../assets/icons/icon-company-dark.svg';
+import LocationIconLight from '../../assets/icons/icon-location-light.svg';
+import TwitterIconLight from '../../assets/icons/icon-twitter-light.svg';
+import WebsiteIconLight from '../../assets/icons/icon-website-light.svg';
+import CompanyIconLight from '../../assets/icons/icon-company-light.svg';
 
 const GitHubUserSearch = () => {
   const [user, setUser] = useState([]);
@@ -14,6 +19,7 @@ const GitHubUserSearch = () => {
   const [search, setSearch] = useState('octocat');
   const [showNoResults, setShowNoResults] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { currentTheme } = useStateContext();
 
   const API = 'https://api.github.com/users/';
   const searchRef = useRef('');
@@ -84,6 +90,23 @@ const GitHubUserSearch = () => {
     searchHandler();
   }, [searchHandler]);
 
+  let locationIcon;
+  let twitterIcon;
+  let websiteIcon;
+  let companyIcon;
+
+  if (currentTheme === 'dark') {
+    locationIcon = LocationIconDark;
+    twitterIcon = TwitterIconDark;
+    websiteIcon = WebsiteIconDark;
+    companyIcon = CompanyIconDark;
+  } else {
+    locationIcon = LocationIconLight;
+    twitterIcon = TwitterIconLight;
+    websiteIcon = WebsiteIconLight;
+    companyIcon = CompanyIconLight;
+  }
+
   return (
     <div className="devfinder mt-[35px]">
       <div className="search flex flex-wrap items-center rounded-[15px] p-[7px] pl-4 md:p-2.5 md:pl-8 gap-2.5">
@@ -140,7 +163,7 @@ const GitHubUserSearch = () => {
               <div className="md:flex flex-wrap m-[-10px]">
                 <div className={`flex items-center p-2.5 md:w-1/2 ${user.location ? '' : 'opacity-50 pointer-events-none'}`}>
                   <div className="mr-5 min-w-[20px]">
-                    <img src={LocationIcon} alt="Location" width="14" height="20" />
+                    <img src={locationIcon} alt="Location" width="14" height="20" />
                   </div>
                   <a
                     className="space-mono-regular max-w-full text-[15px] leading-[25px] text-ellipsis whitespace-nowrap overflow-hidden hover:underline"
@@ -154,7 +177,7 @@ const GitHubUserSearch = () => {
                 </div>
                 <div className={`flex items-center p-2.5 md:w-1/2 ${user.twitter_username ? '' : 'opacity-50 pointer-events-none'}`}>
                   <div className="mr-5 min-w-[20px]">
-                    <img src={TwitterIcon} alt="Twitter" width="20" height="16" />
+                    <img src={twitterIcon} alt="Twitter" width="20" height="16" />
                   </div>
                   <a
                     className="space-mono-regular max-w-full text-[15px] leading-[25px] text-ellipsis whitespace-nowrap overflow-hidden hover:underline"
@@ -168,7 +191,7 @@ const GitHubUserSearch = () => {
                 </div>
                 <div className={`flex items-center p-2.5 md:w-1/2 ${user.blog ? '' : 'opacity-50 pointer-events-none'}`}>
                   <div className="mr-5 min-w-[20px]">
-                    <img src={WebsiteIcon} alt="Website" width="20" height="20" />
+                    <img src={websiteIcon} alt="Website" width="20" height="20" />
                   </div>
                   <a
                     className="space-mono-regular max-w-full text-[15px] leading-[25px] text-ellipsis whitespace-nowrap overflow-hidden hover:underline"
@@ -182,7 +205,7 @@ const GitHubUserSearch = () => {
                 </div>
                 <div className={`flex items-center p-2.5 md:w-1/2 ${user.company ? '' : 'opacity-50 pointer-events-none'}`}>
                   <div className="mr-5 min-w-[20px]">
-                    <img src={CompanyIcon} alt="Company" width="20" height="20" />
+                    <img src={companyIcon} alt="Company" width="20" height="20" />
                   </div>
                   <p className="space-mono-regular max-w-full text-[15px] leading-[25px] text-ellipsis whitespace-nowrap overflow-hidden hover:underline">
                     {user.company && user.company !== null ? user.company : 'Not Available'}
@@ -225,7 +248,7 @@ const GitHubUserSearch = () => {
           <div className="result-additional mt-6">
             <div className={`flex items-center ${user.location ? '' : 'opacity-50 pointer-events-none'}`}>
               <div className="mr-[13px] min-w-[20px]">
-                <img src={LocationIcon} alt="Location" width="14" height="20" />
+                <img src={locationIcon} alt="Location" width="14" height="20" />
               </div>
               <a
                 className="max-w-full text-[13px] text-ellipsis whitespace-nowrap overflow-hidden hover:underline"
@@ -239,7 +262,7 @@ const GitHubUserSearch = () => {
             </div>
             <div className={`flex items-center mt-4 ${user.blog ? '' : 'opacity-50 pointer-events-none'}`}>
               <div className="mr-[13px] min-w-[20px]">
-                <img src={WebsiteIcon} alt="Website" width="20" height="20" />
+                <img src={websiteIcon} alt="Website" width="20" height="20" />
               </div>
               <a
                 className="max-w-full text-[13px] text-ellipsis whitespace-nowrap overflow-hidden hover:underline"
@@ -253,7 +276,7 @@ const GitHubUserSearch = () => {
             </div>
             <div className={`flex items-center mt-4 ${user.twitter_username ? '' : 'opacity-50 pointer-events-none'}`}>
               <div className="mr-[13px] min-w-[20px]">
-                <img src={TwitterIcon} alt="Twitter" width="20" height="16" />
+                <img src={twitterIcon} alt="Twitter" width="20" height="16" />
               </div>
               <a
                 className="max-w-full text-[13px] text-ellipsis whitespace-nowrap overflow-hidden hover:underline"
@@ -267,7 +290,7 @@ const GitHubUserSearch = () => {
             </div>
             <div className={`flex items-center mt-4 ${user.company ? '' : 'opacity-50 pointer-events-none'}`}>
               <div className="mr-[13px] min-w-[20px]">
-                <img src={CompanyIcon} alt="Company" width="20" height="20" />
+                <img src={companyIcon} alt="Company" width="20" height="20" />
               </div>
               <p className="max-w-full text-[13px] text-ellipsis whitespace-nowrap overflow-hidden hover:underline">{user.company && user.company !== null ? user.company : 'Not Available'}</p>
             </div>
